@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 2026 Vibe Coding Showdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2a2a2a;
+    --text: #f0ede8;
+    --muted: #888880;
+    --dim: #555550;
+
+    --cursor: #5b8fff;
+    --cursor-bg: rgba(91,143,255,0.08);
+    --replit: #f26207;
+    --replit-bg: rgba(242,98,7,0.08);
+    --claude: #c5a572;
+    --claude-bg: rgba(197,165,114,0.08);
+    --warp: #a78bfa;
+    --warp-bg: rgba(167,139,250,0.08);
+
+    --accent: #f0ede8;
+    --tag-radius: 3px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .wrapper {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 52px;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border2);
+    max-width: 60px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 58px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--muted);
+  }
+
+  .subtitle {
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 560px;
+    font-weight: 300;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+  }
+
+  .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--dim); }
+
+  /* TOOL PILLS */
+  .tool-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: var(--tag-radius);
+    border: 1px solid;
+    letter-spacing: 0.04em;
+  }
+
+  .pill-cursor { color: var(--cursor); border-color: var(--cursor); background: var(--cursor-bg); }
+  .pill-replit { color: var(--replit); border-color: var(--replit); background: var(--replit-bg); }
+  .pill-claude { color: var(--claude); border-color: var(--claude); background: var(--claude-bg); }
+  .pill-warp   { color: var(--warp);   border-color: var(--warp);   background: var(--warp-bg); }
+
+  /* INTRO TEXT */
+  .intro {
+    font-size: 18px;
+    line-height: 1.75;
+    color: #bbb9b3;
+    margin-bottom: 56px;
+    font-weight: 300;
+  }
+
+  .intro strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--dim);
+  }
+
+  /* TOOL CARD */
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 32px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .tool-card:hover { border-color: var(--border2); }
+
+  .tool-header {
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .tool-name-block {}
+
+  .tool-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .tool-tagline {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .tool-verdict {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: var(--tag-radius);
+    white-space: nowrap;
+    border: 1px solid;
+    align-self: flex-start;
+    letter-spacing: 0.04em;
+  }
+
+  .card-cursor .tool-name { color: var(--cursor); }
+  .card-cursor .tool-verdict { color: var(--cursor); border-color: var(--cursor); background: var(--cursor-bg); }
+
+  .card-replit .tool-name { color: var(--replit); }
+  .card-replit .tool-verdict { color: var(--replit); border-color: var(--replit); background: var(--replit-bg); }
+
+  .card-claude .tool-name { color: var(--claude); }
+  .card-claude .tool-verdict { color: var(--claude); border-color: var(--claude); background: var(--claude-bg); }
+
+  .card-warp .tool-name { color: var(--warp); }
+  .card-warp .tool-verdict { color: var(--warp); border-color: var(--warp); background: var(--warp-bg); }
+
+  .tool-body {
+    padding: 28px 32px;
+  }
+
+  /* STAT ROW */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+
+  .stat {
+    background: var(--surface2);
+    padding: 16px 20px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .stat-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* SUBSECTIONS */
+  .subsection {
+    margin-bottom: 24px;
+  }
+
+  .subsection-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .subsection-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .subsection p {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #aba9a3;
+    font-weight: 300;
+  }
+
+  .subsection p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* PROS / CONS */
+  .pro-con {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 560px) { .pro-con { grid-template-columns: 1fr; } }
+
+  .pro-list, .con-list {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+  }
+
+  .pro-list h4, .con-list h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .pro-list h4 { color: #5a9e6a; }
+  .con-list h4 { color: #c46060; }
+
+  .pro-list li, .con-list li {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #a0a09a;
+    padding: 4px 0 4px 16px;
+    position: relative;
+    list-style: none;
+    font-weight: 300;
+  }
+
+  .pro-list li::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: #5a9e6a;
+    font-family: 'DM Mono', monospace;
+    font-weight: 400;
+  }
+
+  .con-list li::before {
+    content: '−';
+    position: absolute;
+    left: 0;
+    color: #c46060;
+    font-family: 'DM Mono', monospace;
+    font-weight: 400;
+  }
+
+  /* USE CASE TAG */
+  .use-case-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .use-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    border-radius: 2px;
+    letter-spacing: 0.03em;
+  }
+
+  /* PAIN POINT CALLOUT */
+  .pain-callout {
+    border-left: 2px solid #c46060;
+    background: rgba(196, 96, 96, 0.05);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13.5px;
+    color: #b0a0a0;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  .pain-callout strong { color: #e0b0b0; font-style: normal; font-weight: 500; }
+
+  /* COMPARISON TABLE */
+  .table-section {
+    margin: 60px 0;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .comparison-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 16px;
+    text-align: left;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .comparison-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: #a0a09a;
+    vertical-align: top;
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  .comparison-table tr:last-child td { border-bottom: none; }
+  .comparison-table tbody tr:hover td { background: var(--surface2); }
+
+  .comparison-table td:first-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+
+  .c-cursor { color: var(--cursor) !important; font-weight: 500; }
+  .c-replit { color: var(--replit) !important; font-weight: 500; }
+  .c-claude  { color: var(--claude) !important; font-weight: 500; }
+  .c-warp   { color: var(--warp) !important; font-weight: 500; }
+
+  /* VERDICT */
+  .verdict-section {
+    margin: 60px 0;
+  }
+
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 560px) { .verdict-grid { grid-template-columns: 1fr; } }
+
+  .verdict-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+
+  .verdict-if {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+
+  .verdict-pick {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .verdict-reason {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #888;
+    font-weight: 300;
+  }
+
+  /* CLOSING */
+  .closing {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .closing p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #999;
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+
+  .closing p strong { color: var(--text); font-weight: 500; }
+
+  /* HORIZONTAL RULE */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+  }
+
+  .hashtags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .hashtag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .header, .intro, .tool-card, .table-section, .verdict-section, .closing {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .tool-card:nth-child(1) { animation-delay: 0.05s; }
+  .tool-card:nth-child(2) { animation-delay: 0.1s; }
+  .tool-card:nth-child(3) { animation-delay: 0.15s; }
+  .tool-card:nth-child(4) { animation-delay: 0.2s; }
+
+  /* SCAN LINE for texture */
+  .scan {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.015) 2px,
+      rgba(0,0,0,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+</style>
+</head>
+<body>
+<div class="scan"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="eyebrow">X Article — March 2026</div>
+    <h1>The 2026<br>Vibe Coding <em>Showdown</em></h1>
+    <p class="subtitle">Cursor vs Replit Agent 4 vs Claude Code vs Warp — an honest comparison for developers who actually ship things.</p>
+    <div class="meta">
+      <span>Usability</span>
+      <div class="meta-dot"></div>
+      <span>Pain Points</span>
+      <div class="meta-dot"></div>
+      <span>Best Use Cases</span>
+      <div class="meta-dot"></div>
+      <span>Features</span>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <p class="intro">
+    <strong>Every developer is using at least one of these tools right now.</strong> The question isn't whether AI-assisted coding is worth it — that debate's over. The question is which tool fits how you actually work. Each of these four plays a different game. Knowing which game is which saves you money, time, and a lot of confused debugging at 11pm.
+  </p>
+
+  <!-- === CURSOR === -->
+  <div class="section-label">Tool 01</div>
+
+  <div class="tool-card card-cursor">
+    <div class="tool-header">
+      <div class="tool-name-block">
+        <div class="tool-name">Cursor</div>
+        <div class="tool-tagline">The AI IDE that lives where you already code</div>
+      </div>
+      <div class="tool-verdict">Best for Professional Devs</div>
+    </div>
+
+    <div class="tool-body">
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-val">$20–$200</div>
+          <div class="stat-key">Per Month</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">VS Code</div>
+          <div class="stat-key">Base</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">$10B</div>
+          <div class="stat-key">Valuation (2025)</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">What it actually is</div>
+        <p>Cursor is a fork of VS Code with AI wired directly into the IDE experience — not bolted on top. You get your existing extensions, keybindings, and muscle memory, plus an AI that understands your entire codebase, not just the file you have open. Tab completions, inline edits, multi-file refactors, background agents — it's all there. <strong>Over 50% of Fortune 500 companies adopted it in 2025.</strong> That's not hype, that's just where professional dev went.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Usability</div>
+        <p>If you've used VS Code, you'll be productive in Cursor in under an hour. That low friction is the whole point. The AI chat lives in a side pane, Agent Mode (Cmd+I) handles multi-file tasks, and Tab autocomplete is described by users as "eerily good." <strong>Codebase-wide context is the real differentiator</strong> — Cursor semantically indexes your whole repo so suggestions know about your types, patterns, and architecture, not just the open file.</p>
+      </div>
+
+      <div class="pain-callout">
+        <strong>Biggest pain point:</strong> The June 2025 pricing flip from 500 fixed requests to credit-based billing was a disaster. Users reported <strong>$7,000 charges in a single day</strong> from overage. The CEO apologized publicly. Credit burn is unpredictable and the system is still confusing. Also: the advertised 200K context window often silently truncates to 70–120K in practice.
+      </div>
+
+      <div class="pro-con">
+        <ul class="pro-list">
+          <h4>Strengths</h4>
+          <li>Lowest friction for VS Code users — zero relearning</li>
+          <li>Project-wide codebase awareness is best-in-class</li>
+          <li>Multi-file refactoring with Composer is genuinely fast</li>
+          <li>Background Agents run while you work on something else</li>
+          <li>Auto-generates commit messages (small thing, huge QoL)</li>
+          <li>50,000+ line codebases? It handles them.</li>
+        </ul>
+        <ul class="con-list">
+          <h4>Weaknesses</h4>
+          <li>Credit billing is opaque and can spike without warning</li>
+          <li>Context window claims don't match real-world behavior</li>
+          <li>No native GitLab support — enterprise blocker</li>
+          <li>Not built for team collaboration or non-devs</li>
+          <li>Keyboard shortcut conflicts with existing habits</li>
+          <li>Deployment, hosting, databases — you're on your own</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Best use cases</div>
+        <div class="use-case-row">
+          <span class="use-tag">Large existing codebases</span>
+          <span class="use-tag">Multi-file refactoring</span>
+          <span class="use-tag">Production SaaS maintenance</span>
+          <span class="use-tag">Frontend + backend iteration</span>
+          <span class="use-tag">Developers who think in VS Code</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === REPLIT AGENT 4 === -->
+  <div class="section-label">Tool 02</div>
+
+  <div class="tool-card card-replit">
+    <div class="tool-header">
+      <div class="tool-name-block">
+        <div class="tool-name">Replit Agent 4</div>
+        <div class="tool-tagline">Zero setup, full stack, browser-native, now with parallel agents</div>
+      </div>
+      <div class="tool-verdict">Best for Builders & Non-Devs</div>
+    </div>
+
+    <div class="tool-body">
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-val">$20/mo</div>
+          <div class="stat-key">Core Plan</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">$25</div>
+          <div class="stat-key">Credits / Month</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">Mar 2026</div>
+          <div class="stat-key">Agent 4 Launch</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">What it actually is</div>
+        <p>Replit is the closest thing we have to "describe it, get a deployed app." It's a cloud IDE where everything — code, hosting, auth, database, deployment — lives in the browser. <strong>Agent 4 is the biggest leap yet:</strong> parallel agents that tackle auth, backend, and frontend simultaneously; an infinite canvas for design exploration with multiple UI variants; and precise visual controls that write directly to production code. It's no longer just a coding tool — it's trying to become a full creative studio.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Usability</div>
+        <p>The zero-setup experience is genuinely remarkable. You can go from idea to running preview in a single session with no installs, no config, no decision fatigue about infrastructure. <strong>Agent 4 now lets you work on design while another agent handles your backend</strong> — that parallel workflow is a real shift. The Figma import → React component pipeline is smooth. Real-time multiplayer collaboration works like Google Docs. For non-technical founders or designers who want to build, nothing else comes close to this on-ramp.</p>
+      </div>
+
+      <div class="pain-callout">
+        <strong>Biggest pain point:</strong> Credits disappear fast and the math isn't obvious upfront. A single agent session for one feature addition costs $1–5 in credits. A 3-person team hits $400+/month before overages. The agent also has a habit of "fixing" one thing while quietly breaking another — and sometimes ignores your instructions mid-session, forcing costly re-runs. In January 2026, Replit removed the free basic Q&A feature, which pushed even simple questions into the credit-burning system.
+      </div>
+
+      <div class="pro-con">
+        <ul class="pro-list">
+          <h4>Strengths</h4>
+          <li>Zero setup — works entirely in browser</li>
+          <li>Parallel agents handle frontend + backend simultaneously</li>
+          <li>Built-in auth, database, hosting, deployment</li>
+          <li>Infinite canvas with multiple UI design variants</li>
+          <li>Figma import → React code pipeline</li>
+          <li>Real-time multiplayer editing</li>
+          <li>Best choice for non-technical founders</li>
+        </ul>
+        <ul class="con-list">
+          <h4>Weaknesses</h4>
+          <li>Credit model burns fast — surprise bills are common</li>
+          <li>Agent breaks unrelated code while fixing things</li>
+          <li>Slower than local tools for complex projects</li>
+          <li>Less control over architecture decisions</li>
+          <li>Not ideal for large existing codebases</li>
+          <li>Credit costs mount when agent needs multiple attempts</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Best use cases</div>
+        <div class="use-case-row">
+          <span class="use-tag">MVPs from scratch</span>
+          <span class="use-tag">Founders with app ideas</span>
+          <span class="use-tag">Rapid prototyping</span>
+          <span class="use-tag">Non-technical builders</span>
+          <span class="use-tag">Full-stack from zero setup</span>
+          <span class="use-tag">Design → working app</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === CLAUDE CODE === -->
+  <div class="section-label">Tool 03</div>
+
+  <div class="tool-card card-claude">
+    <div class="tool-header">
+      <div class="tool-name-block">
+        <div class="tool-name">Claude Code</div>
+        <div class="tool-tagline">Terminal-native, codebase-deep, autonomy-first</div>
+      </div>
+      <div class="tool-verdict">Best for Senior Devs</div>
+    </div>
+
+    <div class="tool-body">
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-val">$20–$200</div>
+          <div class="stat-key">Claude.ai Plans</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">46%</div>
+          <div class="stat-key">"Most Loved" (2026)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">5.5×</div>
+          <div class="stat-key">Fewer Tokens vs Cursor</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">What it actually is</div>
+        <p>Claude Code launched in May 2025 and became the most-loved AI coding tool by early 2026 — <strong>46% rating vs Cursor's 19%.</strong> It's terminal-native, built for delegation rather than autocomplete. You describe an objective, Claude Code reads your codebase, plans the approach, edits files across the project, runs tests, handles git, and iterates. There's no IDE — it's designed for developers who think in the terminal and want to hand off complex multi-step work entirely.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Usability</div>
+        <p>This is not beginner-friendly, and it doesn't pretend to be. It's for developers who understand their codebase well enough to delegate large chunks of it. When it works — on refactors, feature implementation, test generation, CI/CD integration — <strong>it operates on a different level than IDE-based tools.</strong> Token efficiency is remarkable: independent testing found it uses 5.5× fewer tokens than Cursor for identical tasks. The 200K context window actually delivers in practice, unlike Cursor's advertised-but-truncated version.</p>
+      </div>
+
+      <div class="pain-callout">
+        <strong>Biggest pain point:</strong> Usage limits hit hard during intensive coding sessions. The 5-hour rolling window and 7-day ceiling can cut your workflow mid-sprint. The Max plan at $200/month has reports of limits being hit within a week of heavy use. There's also no visual UI — if you prefer GUI-driven development, this will feel uncomfortable.
+      </div>
+
+      <div class="pro-con">
+        <ul class="pro-list">
+          <h4>Strengths</h4>
+          <li>Best autonomous multi-file work — hands down</li>
+          <li>200K context window actually works in practice</li>
+          <li>5.5× more token-efficient than Cursor</li>
+          <li>Handles CI/CD pipeline integration natively</li>
+          <li>Deep reasoning on complex architectural tasks</li>
+          <li>Works inside VS Code, JetBrains, desktop, and web</li>
+          <li>#1 "most loved" tool among developers in 2026</li>
+        </ul>
+        <ul class="con-list">
+          <h4>Weaknesses</h4>
+          <li>No autocomplete — not designed for it</li>
+          <li>Terminal-only origins put off GUI-focused devs</li>
+          <li>Usage limits interrupt flow during heavy sessions</li>
+          <li>Cost at Max tier ($100–200/mo) is steep</li>
+          <li>No deployment or hosting — you handle infra</li>
+          <li>Steeper learning curve for structuring prompts well</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Best use cases</div>
+        <div class="use-case-row">
+          <span class="use-tag">Large codebase refactors</span>
+          <span class="use-tag">Feature implementation</span>
+          <span class="use-tag">Test generation</span>
+          <span class="use-tag">CI/CD pipeline integration</span>
+          <span class="use-tag">Senior devs delegating complexity</span>
+          <span class="use-tag">Autonomous multi-step tasks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === WARP === -->
+  <div class="section-label">Tool 04</div>
+
+  <div class="tool-card card-warp">
+    <div class="tool-header">
+      <div class="tool-name-block">
+        <div class="tool-name">Warp</div>
+        <div class="tool-tagline">The terminal that became an Agentic Development Environment</div>
+      </div>
+      <div class="tool-verdict">Best for Terminal-Native Devs</div>
+    </div>
+
+    <div class="tool-body">
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-val">Free → $200</div>
+          <div class="stat-key">Per Month</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">Rust</div>
+          <div class="stat-key">Built In (GPU-rendered)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">3.2B</div>
+          <div class="stat-key">Lines Edited in 2025</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">What it actually is</div>
+        <p>Warp started as a beautiful terminal rebuilt in Rust. In 2025 it evolved into what it calls an "Agentic Development Environment" — combining a code editor, terminal, AI agents, and cloud orchestration in one place. <strong>Warp 2.0 and the "Oz" platform let you run hundreds of cloud agents in parallel.</strong> It integrates with Slack, Linear, and GitHub Actions, letting you trigger agents from the tools your team already uses. In 2025 it ranked #1 on several major coding benchmarks.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Usability</div>
+        <p>If you live in the terminal, Warp is the most thoughtfully designed version of that environment you'll find. The GPU-rendered performance is noticeably snappy. Natural language → shell commands, interactive code review built into the terminal, diff-tracking to see exactly what agents changed — <strong>it's designed for the "prompt → production" loop without leaving your command line.</strong> The review-first workflow gives you more control over what agents do before you merge anything. Voice input via Wispr Flow is also now native.</p>
+      </div>
+
+      <div class="pain-callout">
+        <strong>Biggest pain point:</strong> Warp requires a login to use, which is a non-starter for teams with strict security policies. Pricing tiers ($20 to $200/mo) have limited AI requests per month, and heavy agentic users hit ceilings fast. The tool's identity is still clarifying — it's the terminal, the IDE, and the cloud orchestrator all at once, which can feel unfocused if you just want one thing done well.
+      </div>
+
+      <div class="pro-con">
+        <ul class="pro-list">
+          <h4>Strengths</h4>
+          <li>Best terminal experience on the market — period</li>
+          <li>GPU-rendered speed is genuinely perceptible</li>
+          <li>Parallel cloud agents with Oz platform</li>
+          <li>Native Slack, Linear, GitHub Actions integration</li>
+          <li>Diff-tracking for agent output — review before merge</li>
+          <li>Cross-platform: Mac, Linux, Windows</li>
+          <li>SOC 2 Type 2 certified, Zero Data Retention option</li>
+        </ul>
+        <ul class="con-list">
+          <h4>Weaknesses</h4>
+          <li>Login required — security-sensitive teams balk</li>
+          <li>AI request limits per tier, overages apply</li>
+          <li>Identity still feels scattered across 4 product areas</li>
+          <li>Less familiar to IDE-first developers</li>
+          <li>Not the right tool for non-technical builders</li>
+          <li>No deployment or hosting built in</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Best use cases</div>
+        <div class="use-case-row">
+          <span class="use-tag">Terminal-first developers</span>
+          <span class="use-tag">DevOps workflows</span>
+          <span class="use-tag">Multi-agent cloud tasks</span>
+          <span class="use-tag">Teams using Slack + Linear</span>
+          <span class="use-tag">Security-conscious teams (ZDR)</span>
+          <span class="use-tag">Scripting & automation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="table-section">
+    <div class="section-label">Side by Side</div>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th class="c-cursor">Cursor</th>
+          <th class="c-replit">Replit Agent 4</th>
+          <th class="c-claude">Claude Code</th>
+          <th class="c-warp">Warp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Learning curve</td>
+          <td>Low (VS Code users)</td>
+          <td>Very low</td>
+          <td>Medium–High</td>
+          <td>Low–Medium</td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td>Pro devs</td>
+          <td>Builders & non-devs</td>
+          <td>Senior devs</td>
+          <td>Terminal-native devs</td>
+        </tr>
+        <tr>
+          <td>Starting price</td>
+          <td>$20/mo</td>
+          <td>$20/mo + credits</td>
+          <td>$20/mo (Claude Pro)</td>
+          <td>Free → $20/mo</td>
+        </tr>
+        <tr>
+          <td>Surprise billing risk</td>
+          <td>High (credits)</td>
+          <td>Very High (credits)</td>
+          <td>Medium (rolling limits)</td>
+          <td>Medium (overages)</td>
+        </tr>
+        <tr>
+          <td>Hosting / deploy</td>
+          <td>Not included</td>
+          <td>Built in</td>
+          <td>Not included</td>
+          <td>Not included</td>
+        </tr>
+        <tr>
+          <td>Database / auth</td>
+          <td>Not included</td>
+          <td>Built in</td>
+          <td>Not included</td>
+          <td>Not included</td>
+        </tr>
+        <tr>
+          <td>Autocomplete</td>
+          <td>Excellent</td>
+          <td>None (agent-based)</td>
+          <td>None</td>
+          <td>Good</td>
+        </tr>
+        <tr>
+          <td>Multi-file autonomy</td>
+          <td>Good</td>
+          <td>Very Good</td>
+          <td>Excellent</td>
+          <td>Good</td>
+        </tr>
+        <tr>
+          <td>Terminal experience</td>
+          <td>Standard</td>
+          <td>Browser-based</td>
+          <td>Terminal native</td>
+          <td>Best-in-class</td>
+        </tr>
+        <tr>
+          <td>Works offline / local</td>
+          <td>Yes</td>
+          <td>No (cloud)</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Non-technical user support</td>
+          <td>No</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Figma → code</td>
+          <td>Plugin-based</td>
+          <td>Native (Design Mode)</td>
+          <td>Via external tools</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Token efficiency</td>
+          <td>Moderate</td>
+          <td>Credit-based</td>
+          <td>Best (5.5× vs Cursor)</td>
+          <td>Moderate</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="verdict-section">
+    <div class="section-label">The Real Answer</div>
+    <p style="font-size:15px;color:#888;line-height:1.7;margin-bottom:24px;font-weight:300;">There's no universal winner. These tools serve different developers doing different things. Pick based on where you actually are in your workflow:</p>
+
+    <div class="verdict-grid">
+      <div class="verdict-card">
+        <div class="verdict-if">Use this if...</div>
+        <div class="verdict-pick c-cursor">Cursor</div>
+        <div class="verdict-reason">You're a developer who lives in VS Code, works on existing codebases, and wants AI embedded in the editor without changing how you work. Set spending limits from day one.</div>
+      </div>
+      <div class="verdict-card">
+        <div class="verdict-if">Use this if...</div>
+        <div class="verdict-pick c-replit">Replit Agent 4</div>
+        <div class="verdict-reason">You want to go from idea to deployed app in a single session, don't want to configure infrastructure, and are building something new rather than maintaining something existing. Watch your credits.</div>
+      </div>
+      <div class="verdict-card">
+        <div class="verdict-if">Use this if...</div>
+        <div class="verdict-pick c-claude">Claude Code</div>
+        <div class="verdict-reason">You're comfortable in the terminal, need to delegate large-scale refactors or feature work, and care more about code quality and autonomy than autocomplete. The best tool for complex delegated work.</div>
+      </div>
+      <div class="verdict-card">
+        <div class="verdict-if">Use this if...</div>
+        <div class="verdict-pick c-warp">Warp</div>
+        <div class="verdict-reason">You're terminal-first, want the most thoughtfully designed command line environment, and need agents that integrate with Slack and Linear. DevOps and automation workflows especially.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p>The honest truth is that <strong>most professional developers end up using two of these</strong> — one for interactive editing and one for autonomous heavy lifting. Claude Code + Cursor is a popular combo ($40/month, very different jobs). Replit is often standalone because it handles the full stack.</p>
+    <p>The tools that do one thing brilliantly will always beat the ones that try to do everything. Know your workflow, pick accordingly, and set spending limits on day one. All four of these have billing surprises waiting for you if you don't.</p>
+    <p><strong>What are you using right now? Drop it below.</strong></p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>March 2026 · X Article · #VibeCoding</p>
+    <div class="hashtags">
+      <span class="hashtag">#VibeCoding</span>
+      <span class="hashtag">#Cursor</span>
+      <span class="hashtag">#ReplitAgent4</span>
+      <span class="hashtag">#ClaudeCode</span>
+      <span class="hashtag">#Warp</span>
+      <span class="hashtag">#BuildInPublic</span>
+      <span class="hashtag">#AITools</span>
+      <span class="hashtag">#Frontend</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
